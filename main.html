@@ -73,9 +73,20 @@
 <body>
     <h1>3학년 반별 선택과목 시간표</h1>
     <div class="search-container">
-        <input type="text" id="studentId" placeholder="2학년때 학번 입력">
+        <input type="text" id="studentId" placeholder="2학년때 학번 입력 (예: 20602)">
         <button onclick="showTimetable()">검색</button>
     </div>
+        <!-- 텅 빈 시간표 (기본적으로 표시) -->
+    <table id="emptyTimetable" class="timetable">
+        <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+        <tr><td>1교시 (08:40)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>2교시 (09:40)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>3교시 (10:40)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>4교시 (11:40)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>5교시 (13:30)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>6교시 (14:30)</td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>7교시 (15:30)</td><td></td><td></td><td></td><td></td><td></td></tr>
+    
 
     <!-- 반별 시간표 (하드코딩) -->
     <div id="timetables">
@@ -174,8 +185,7 @@
             <tr><td>6교시 (14:30)</td><td>B생Ⅱ</td><td>C과연</td><td>동아리</td><td>언매</td><td>A지Ⅱ</td></tr>
             <tr><td>7교시 (15:30)</td><td>언매</td><td>영작</td><td>언매</td><td>B생Ⅱ</td><td></td></tr>
         </table>
-    </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<h6>made by kimcastleowner</h6>
+    <div class="footer">made by kimcastleowner</div>
     <script>
         // 학생 데이터 (하드코딩)
         const students = 
@@ -2193,52 +2203,57 @@
 ]
 
 
+        function showTimetable() {
+            const studentId = parseInt(document.getElementById('studentId').value); // 학번을 숫자로 변환
+            const student = students.find(s => s.id === studentId); // 학생 검색
 
-    function showTimetable() {
-        const studentId = parseInt(document.getElementById('studentId').value); // 학번을 숫자로 변환
-        const student = students.find(s => s.id === studentId); // 학생 검색
+            if (!student) {
+                alert('학생 정보를 찾을 수 없습니다.');
+                return;
+            }
 
-        if (!student) {
-            alert('학생 정보를 찾을 수 없습니다.');
-            return;
+            // 텅 빈 시간표 숨기기
+            document.getElementById('emptyTimetable').style.display = 'none';
+
+            // 반별 시간표 표시
+            const timetablesDiv = document.getElementById('timetables');
+            timetablesDiv.style.display = 'block';
+
+            // 모든 시간표 숨기기
+            document.querySelectorAll('.timetable').forEach(table => {
+                table.style.display = 'none';
+            });
+
+            // 해당 반 시간표 표시
+            const classTable = document.getElementById(`class${student.class}`);
+            if (classTable) {
+                classTable.style.display = 'table';
+                replaceSubjects(classTable, student.subjects); // 과목 대체
+            }
         }
 
-        // 모든 시간표 숨기기
-        document.querySelectorAll('.timetable').forEach(table => {
-            table.classList.remove('active');
-        });
-
-        // 해당 반 시간표 표시
-        const classTable = document.getElementById(`class${student.class}`);
-        if (classTable) {
-            classTable.classList.add('active');
-            replaceSubjects(classTable, student.subjects); // 과목 대체
-        }
-    }
-
-    function replaceSubjects(table, subjects) {
-        const rows = table.getElementsByTagName('tr');
-        for (let i = 1; i < rows.length; i++) { // 1번째 행부터 시작 (헤더 제외)
-            const cells = rows[i].getElementsByTagName('td');
-            for (let j = 1; j < cells.length; j++) { // 1번째 열부터 시작 (시간 열 제외)
-                const cellText = cells[j].textContent.trim(); // 셀 내용 (공백 제거)
-                if (cellText.startsWith('A')) {
-                    cells[j].textContent = subjects.A || cellText; // A 과목 대체
-                } else if (cellText.startsWith('B')) {
-                    // B1, B2 등의 세부 코드 처리
-                    const bCode = cellText.match(/B\d*/)?.[0]; // B1, B2 등을 추출
-                    cells[j].textContent = subjects[bCode] || cellText; // B 과목 대체
-                } else if (cellText.startsWith('C')) {
-                    cells[j].textContent = subjects.C || cellText; // C 과목 대체
-                } else if (cellText.startsWith('D')) {
-                    cells[j].textContent = subjects.D || cellText; // D 과목 대체
-                } else if (cellText === "1.0") {
-                    cells[j].textContent = subjects["1.0"] || cellText; // 1.0 과목 대체
+        function replaceSubjects(table, subjects) {
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) { // 1번째 행부터 시작 (헤더 제외)
+                const cells = rows[i].getElementsByTagName('td');
+                for (let j = 1; j < cells.length; j++) { // 1번째 열부터 시작 (시간 열 제외)
+                    const cellText = cells[j].textContent.trim(); // 셀 내용 (공백 제거)
+                    if (cellText.startsWith('A')) {
+                        cells[j].textContent = subjects.A || cellText; // A 과목 대체
+                    } else if (cellText.startsWith('B')) {
+                        // B1, B2 등의 세부 코드 처리
+                        const bCode = cellText.match(/B\d*/)?.[0]; // B1, B2 등을 추출
+                        cells[j].textContent = subjects[bCode] || cellText; // B 과목 대체
+                    } else if (cellText.startsWith('C')) {
+                        cells[j].textContent = subjects.C || cellText; // C 과목 대체
+                    } else if (cellText.startsWith('D')) {
+                        cells[j].textContent = subjects.D || cellText; // D 과목 대체
+                    } else if (cellText === "1.0") {
+                        cells[j].textContent = subjects["1.0"] || cellText; // 1.0 과목 대체
+                    }
                 }
             }
         }
-    }
-</script>
     </script>
 </body>
 </html>
