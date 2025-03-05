@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3학년 반별 선택과목 시간표</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .timetable {
+            display: none;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .timetable th, .timetable td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            width: 14.28%; /* 7교시를 동일한 크기로 나눔 */
+        }
+        .timetable th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            color: #333;
+        }
+        .timetable td {
+            background-color: #fff;
+        }
+        .timetable.active {
+            display: table;
+        }
+    </style>
+</head>
+<body>
+    <h1>3학년 반별 선택과목 시간표</h1>
+    <div class="search-container">
+        <input type="text" id="studentId" placeholder="학번 입력">
+        <button onclick="showTimetable()">검색</button>
+    </div>
+
+    <!-- 반별 시간표 (하드코딩) -->
+    <div id="timetables">
+        <!-- 1반 시간표 -->
+        <table id="class1" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>운건3</td><td>A윤사</td><td>음연</td><td>화작</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D미적</td><td>B정범</td><td>C심국</td><td>음연</td><td>D미적</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D미적</td><td>영작</td><td>영작</td><td>C심국</td><td>D미적</td></tr>
+            <tr><td>4교시 (11:40)</td><td>화작</td><td>A윤사</td><td>일Ⅱ</td><td>A윤사</td><td>B정범</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C심국</td><td>영작</td><td>자율</td><td>화작</td><td>운건3</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B정범</td><td>C심국</td><td>동알</td><td>영작</td><td>A윤사</td></tr>
+            <tr><td>7교시 (15:30)</td><td>일Ⅱ</td><td>화작</td><td>진로</td><td>B정범</td><td></td></tr>
+        </table>
+
+        <!-- 2반 시간표 -->
+        <table id="class2" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>화작</td><td>A정법</td><td>영작</td><td>운건3</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D미적</td><td>B윤사</td><td>C영문</td><td>화작</td><td>D미적</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D미적</td><td>인기</td><td>음연</td><td>C영문</td><td>D미적</td></tr>
+            <tr><td>4교시 (11:40)</td><td>화작</td><td>A정법</td><td>영작</td><td>A정법</td><td>B윤사</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C영문</td><td>음연</td><td>자율</td><td>인기</td><td>영작</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B윤사</td><td>C영문</td><td>동알</td><td>진로</td><td>A정법</td></tr>
+            <tr><td>7교시 (15:30)</td><td>영작</td><td>운건3</td><td>화작</td><td>B윤사</td><td></td></tr>
+        </table>
+
+        <!-- 3반 시간표 -->
+        <table id="class3" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>화작</td><td>A사람</td><td>화작</td><td>영희</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D심국</td><td>B물Ⅱ</td><td>C미적</td><td>프로</td><td>D심국</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D심국</td><td>영희</td><td>운건3</td><td>C미적</td><td>D심국</td></tr>
+            <tr><td>4교시 (11:40)</td><td>진로</td><td>A사람</td><td>화작</td><td>A사람</td><td>B물Ⅱ</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C미적</td><td>운건3</td><td>자율</td><td>영희</td><td>화작</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B물Ⅱ</td><td>C미적</td><td>동암</td><td>음연</td><td>A사람</td></tr>
+            <tr><td>7교시 (15:30)</td><td>음연</td><td>영희</td><td>프로</td><td>B물Ⅱ</td><td></td></tr>
+        </table>
+
+        <!-- 4반 시간표 -->
+        <table id="class4" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>영작</td><td>A사람</td><td>인기</td><td>인기</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D영문</td><td>B화Ⅱ</td><td>C미적</td><td>화작</td><td>D영문</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D영문</td><td>운건3</td><td>미창</td><td>C미적</td><td>D영문</td></tr>
+            <tr><td>4교시 (11:40)</td><td>진로</td><td>A사람</td><td>화작</td><td>A사람</td><td>B화Ⅱ</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C미적</td><td>미창</td><td>자율</td><td>운건3</td><td>화작</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B화Ⅱ</td><td>C미적</td><td>동알</td><td>영작</td><td>A사람</td></tr>
+            <tr><td>7교시 (15:30)</td><td>영작</td><td>화작</td><td>영작</td><td>B화Ⅱ</td><td></td></tr>
+        </table>
+
+        <!-- 5반 시간표 -->
+        <table id="class5" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>영희</td><td>A물Ⅱ</td><td>화작</td><td>화작</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D심수</td><td>B사람</td><td>C경수</td><td>진로</td><td>D심수</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D심수</td><td>논술</td><td>윤건3</td><td>C경수</td><td>D심수</td></tr>
+            <tr><td>4교시 (11:40)</td><td>영희</td><td>A물Ⅱ</td><td>영희</td><td>A물Ⅱ</td><td>B사람</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C경수</td><td>윤건3</td><td>자율</td><td>논술</td><td>영희</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B사람</td><td>C경수</td><td>동알</td><td>화작</td><td>A물Ⅱ</td></tr>
+            <tr><td>7교시 (15:30)</td><td>화작</td><td>음연</td><td>음연</td><td>B사람</td><td></td></tr>
+        </table>
+
+        <!-- 6반 시간표 -->
+        <table id="class6" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>언매</td><td>A화Ⅱ</td><td>언매</td><td>영작</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D교육</td><td>B사탐</td><td>C심수</td><td>영작</td><td>D교육</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D교육</td><td>운건3</td><td>인기</td><td>C심수</td><td>D교육</td></tr>
+            <tr><td>4교시 (11:40)</td><td>인기</td><td>A화Ⅱ</td><td>언매</td><td>A화Ⅱ</td><td>B사탐</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C심수</td><td>영작</td><td>자율</td><td>영작</td><td>언매</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B사탐</td><td>C심수</td><td>동알</td><td>미창</td><td>A화Ⅱ</td></tr>
+            <tr><td>7교시 (15:30)</td><td>미창</td><td>진로</td><td>운건3</td><td>B사탐</td><td></td></tr>
+        </table>
+
+        <!-- 7반 시간표 -->
+        <table id="class7" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>영작</td><td>A샹Ⅱ</td><td>미창</td><td>윤건3</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D과연</td><td>B생실</td><td>C교육</td><td>미창</td><td>D과연</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D과연</td><td>중문</td><td>진로</td><td>C교육</td><td>D과연</td></tr>
+            <tr><td>4교시 (11:40)</td><td>영작</td><td>A샹Ⅱ</td><td>영작</td><td>A샹Ⅱ</td><td>B생실</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C교육</td><td>화작</td><td>자율</td><td>중문</td><td>영작</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B생실</td><td>C교육</td><td>동알</td><td>화작</td><td>A샹Ⅱ</td></tr>
+            <tr><td>7교시 (15:30)</td><td>화작</td><td>윤건3</td><td>화작</td><td>B생실</td><td></td></tr>
+        </table>
+
+        <!-- 8반 시간표 -->
+        <table id="class8" class="timetable">
+            <tr><th>시간</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th></tr>
+            <tr><td>1교시 (08:40)</td><td>독서</td><td>윤건3</td><td>A지Ⅱ</td><td>연극</td><td>영작</td></tr>
+            <tr><td>2교시 (09:40)</td><td>D체탐</td><td>B생Ⅱ</td><td>C과연</td><td>연극</td><td>D체탐</td></tr>
+            <tr><td>3교시 (10:40)</td><td>D체탐</td><td>영작</td><td>일Ⅱ</td><td>C과연</td><td>D체탐</td></tr>
+            <tr><td>4교시 (11:40)</td><td>일Ⅱ</td><td>A지Ⅱ</td><td>진로</td><td>A지Ⅱ</td><td>B생Ⅱ</td></tr>
+            <tr><td>5교시 (13:30)</td><td>C과연</td><td>언매</td><td>자율</td><td>영작</td><td>윤건3</td></tr>
+            <tr><td>6교시 (14:30)</td><td>B생Ⅱ</td><td>C과연</td><td>동알</td><td>언매</td><td>A지Ⅱ</td></tr>
+            <tr><td>7교시 (15:30)</td><td>언매</td><td>영작</td><td>언매</td><td>B생Ⅱ</td><td></td></tr>
+        </table>
+    </div>
+
+    <script>
+        // 학생 데이터 (하드코딩)
+        const students = [
+    {
+        "id": "nan",
+        "name": NaN,
+        "class": "nan",
+        "subjects": {
+            "화법과 작문": "1학기 [택2] 4단위",
+            "언어와 매체": "Unnamed: 5",
+            "영어 회화": "Unnamed: 6",
+            "영어 독해와 작문": "Unnamed: 7",
+            "윤리와 사상": "1학기 [택2] 4단위.1",
+            "정치와 법": "Unnamed: 9",
+            "사회문제 탐구": "Unnamed: 10",
+            "물리학Ⅱ": "Unnamed: 11",
+            "화학Ⅱ": "Unnamed: 12",
+            "생명과학Ⅱ": "Unnamed: 13",
+            "지구과학Ⅱ": "Unnamed: 14",
+            "물리실험": "Unnamed: 15",
+            "생명과학실험": "Unnamed: 16",
+            "지구과학실험": "Unnamed: 17",
+            "음악 연주": "1,2학기 [택1] 2단위씩",
+            "미술 창작": "Unnamed: 19",
+            "연극": "Unnamed: 20",
+            "인공지능 기초": "1,2학기 [택1] 2단위씩 ",
+            "프로그래밍": "Unnamed: 22",
+            "논술": "Unnamed: 23",
+            "일본어Ⅱ": "Unnamed: 24",
+            "중국문화": "Unnamed: 25",
+            "심화국어": "1학기 [택2] 4단위.2",
+            "영어권 문화": "Unnamed: 27",
+            "미적분": "Unnamed: 28",
+            "경제수학": "Unnamed: 29",
+            "심화수학Ⅰ": "Unnamed: 30",
+            "교육학": "Unnamed: 31",
+            "체육탐구": "Unnamed: 32",
+            "과학과제연구": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20404.0",
+        "name": "고효성",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20203.0",
+        "name": "권주훈",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20301.0",
+        "name": "김기필",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B2": "Unnamed: 10",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20407.0",
+        "name": "김문겸",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20601.0",
+        "name": "김민재",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 14",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20104.0",
+        "name": "김연제",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "Unnamed: 13",
+            "A": "Unnamed: 14",
+            "D": "1학기 [택2] 4단위.2",
+            "C2": "Unnamed: 28"
+        }
+    },
+    {
+        "id": "20105.0",
+        "name": "김영광",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20604.0",
+        "name": "류도현",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "D": "Unnamed: 32",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20806.0",
+        "name": "박민호",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 11",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20108.0",
+        "name": "배성찬",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20109.0",
+        "name": "서준석",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20706.0",
+        "name": "안시현",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A2": "Unnamed: 10",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20110.0",
+        "name": "원장희",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20708.0",
+        "name": "유근식",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20710.0",
+        "name": "윤태웅",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 12",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20215.0",
+        "name": "이승기",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20718.0",
+        "name": "임준혁",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20218.0",
+        "name": "장준영",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20517.0",
+        "name": "전대호",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20619.0",
+        "name": "정재경",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 13",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20720.0",
+        "name": "지민환",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20220.0",
+        "name": "최동환",
+        "class": "1.0",
+        "subjects": {
+            "1.0": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20801.0",
+        "name": "강원준",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20502.0",
+        "name": "김도현",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20303.0",
+        "name": "김부겸",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20103.0",
+        "name": "김시원",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20703.0",
+        "name": "김진권",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 9",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20606.0",
+        "name": "박종윤",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 13",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20808.0",
+        "name": "성승환",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20509.0",
+        "name": "신희성",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20512.0",
+        "name": "우승현",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20111.0",
+        "name": "유영훈",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20112.0",
+        "name": "윤래원",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20214.0",
+        "name": "윤서진",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20113.0",
+        "name": "윤여명",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "C": "Unnamed: 29",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20716.0",
+        "name": "이충훈",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20615.0",
+        "name": "이홍희",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 11",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20515.0",
+        "name": "이훈현",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 14",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20616.0",
+        "name": "임재민",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A2": "Unnamed: 10",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20820.0",
+        "name": "조영훈",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20721.0",
+        "name": "최형진",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20722.0",
+        "name": "홍현빈",
+        "class": "2.0",
+        "subjects": {
+            "2.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20501.0",
+        "name": "강석호",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20702.0",
+        "name": "김도일",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 11",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20602.0",
+        "name": "김성주",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20409.0",
+        "name": "김현태",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20805.0",
+        "name": "박민서",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 14",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20807.0",
+        "name": "박범찬",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 13",
+            "A": "Unnamed: 14",
+            "D": "Unnamed: 30",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20306.0",
+        "name": "박용재",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 12",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20122.0",
+        "name": "서관우 ",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정"
+        }
+    },
+    {
+        "id": "20308.0",
+        "name": "신준서",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 11",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20311.0",
+        "name": "윤민식",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20711.0",
+        "name": "이상혁",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 14",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20617.0",
+        "name": "임준수",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20618.0",
+        "name": "장세진",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 13",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20818.0",
+        "name": "정세진",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 13",
+            "A": "Unnamed: 14",
+            "D": "Unnamed: 27",
+            "C1": "Unnamed: 28"
+        }
+    },
+    {
+        "id": "20422.0",
+        "name": "최재근",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 13",
+            "A": "Unnamed: 14",
+            "D": "Unnamed: 27",
+            "C2": "Unnamed: 28"
+        }
+    },
+    {
+        "id": "20221.0",
+        "name": "최정현",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20520.0",
+        "name": "최정훈",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20822.0",
+        "name": "하윤우",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20222.0",
+        "name": "한승희",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 12",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20322.0",
+        "name": "황희성",
+        "class": "3.0",
+        "subjects": {
+            "3.0": "반배정",
+            "1": "Unnamed: 22",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 12",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20101.0",
+        "name": "강준호",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20402.0",
+        "name": "강찬모",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20201.0",
+        "name": "강호성",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20202.0",
+        "name": "고영준",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20406.0",
+        "name": "김도현",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20307.0",
+        "name": "박지민",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20212.0",
+        "name": "송인서",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20313.0",
+        "name": "이수혁",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20216.0",
+        "name": "이정규",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20814.0",
+        "name": "이제서",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 11",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20513.0",
+        "name": "이주환",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20614.0",
+        "name": "이태우",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20316.0",
+        "name": "이태형",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20115.0",
+        "name": "이한울",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20717.0",
+        "name": "이환유",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20117.0",
+        "name": "장민준",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20118.0",
+        "name": "정민선",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20821.0",
+        "name": "진종우",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 9",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20119.0",
+        "name": "최윤제",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 30",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20521.0",
+        "name": "최지호",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20121.0",
+        "name": "허지찬",
+        "class": "4.0",
+        "subjects": {
+            "4.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20802.0",
+        "name": "고은혁",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20302.0",
+        "name": "김동현",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20408.0",
+        "name": "김시우",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20603.0",
+        "name": "김태환",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20803.0",
+        "name": "김형준",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "A1": "Unnamed: 10",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20305.0",
+        "name": "박건수",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20508.0",
+        "name": "박찬영",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20410.0",
+        "name": "신동찬",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20810.0",
+        "name": "오승원",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 13",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20511.0",
+        "name": "오해찬",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20414.0",
+        "name": "이승우",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20613.0",
+        "name": "이준호",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20816.0",
+        "name": "임정민",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 13",
+            "D": "Unnamed: 32",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20317.0",
+        "name": "정다운",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20518.0",
+        "name": "정우찬",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20819.0",
+        "name": "정하늘",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A1": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20219.0",
+        "name": "조성유",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20420.0",
+        "name": "조승원",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A1": "Unnamed: 10",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20621.0",
+        "name": "조준희",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "1학기 [택2] 4단위.1",
+            "A2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20519.0",
+        "name": "주지훈",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20321.0",
+        "name": "허용준",
+        "class": "5.0",
+        "subjects": {
+            "5.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20204.0",
+        "name": "김도현",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20206.0",
+        "name": "김승찬",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20505.0",
+        "name": "김재엽",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 11",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20304.0",
+        "name": "김현빈",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20507.0",
+        "name": "김형진",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20704.0",
+        "name": "박형원",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 14",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20309.0",
+        "name": "신철환",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20607.0",
+        "name": "심민용",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20809.0",
+        "name": "심예헌",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20510.0",
+        "name": "안서현",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 14",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20608.0",
+        "name": "안치영",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 13",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20709.0",
+        "name": "유홍준",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20609.0",
+        "name": "이권우",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20813.0",
+        "name": "이동주",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20623.0",
+        "name": "이윤호",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 9",
+            "A": "Unnamed: 13",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20713.0",
+        "name": "이정현",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20612.0",
+        "name": "이종휘",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20217.0",
+        "name": "이찬민",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20715.0",
+        "name": "이찬빈",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "B1": "Unnamed: 10",
+            "A": "Unnamed: 11",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20416.0",
+        "name": "이창민",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20417.0",
+        "name": "임광혁",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 12",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20319.0",
+        "name": "조성훈",
+        "class": "6.0",
+        "subjects": {
+            "6.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20401.0",
+        "name": "강주원",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20102.0",
+        "name": "김도현",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "1학기 [택2] 4단위.1",
+            "B2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20504.0",
+        "name": "김영찬",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20506.0",
+        "name": "김재훈",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20804.0",
+        "name": "박권정",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A1": "Unnamed: 10",
+            "B": "Unnamed: 16",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20210.0",
+        "name": "배성빈",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 13",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20705.0",
+        "name": "서연철",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 9",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20213.0",
+        "name": "신사민",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20411.0",
+        "name": "양희건",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20412.0",
+        "name": "이병륜",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20114.0",
+        "name": "이상헌",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "1학기 [택2] 4단위.1",
+            "B2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20413.0",
+        "name": "이수민",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "D2": "Unnamed: 28",
+            "C": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20611.0",
+        "name": "이제환",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 23",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20315.0",
+        "name": "이주성",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20415.0",
+        "name": "이주훈",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A2": "Unnamed: 10",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20514.0",
+        "name": "이채민",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20815.0",
+        "name": "이태영",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 23",
+            "B": "1학기 [택2] 4단위.1",
+            "A1": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20418.0",
+        "name": "임재혁",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20419.0",
+        "name": "조성태",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20120.0",
+        "name": "편성현",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20320.0",
+        "name": "한상우",
+        "class": "7.0",
+        "subjects": {
+            "7.0": "반배정",
+            "1": "Unnamed: 25",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20403.0",
+        "name": "고현우",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 13",
+            "B": "Unnamed: 16",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20701.0",
+        "name": "김건우",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 11",
+            "A": "Unnamed: 14",
+            "C": "1학기 [택2] 4단위.2",
+            "D1": "Unnamed: 28"
+        }
+    },
+    {
+        "id": "20205.0",
+        "name": "김성민",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 12",
+            "B": "Unnamed: 13",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20208.0",
+        "name": "김인회",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 29",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20106.0",
+        "name": "김준혁",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "D": "Unnamed: 27",
+            "C": "Unnamed: 29"
+        }
+    },
+    {
+        "id": "20605.0",
+        "name": "박배성",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 9",
+            "A2": "Unnamed: 10",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20209.0",
+        "name": "박준서",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B": "Unnamed: 13",
+            "C": "Unnamed: 27",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20522.0",
+        "name": "배경근",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 11",
+            "C2": "Unnamed: 28",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20310.0",
+        "name": "오진우",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 13",
+            "A": "Unnamed: 14",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20823.0",
+        "name": "유재각",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "D": "Unnamed: 27",
+            "C1": "Unnamed: 28"
+        }
+    },
+    {
+        "id": "20811.0",
+        "name": "윤재연",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A1": "Unnamed: 10",
+            "B": "Unnamed: 16",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20812.0",
+        "name": "이동규",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "Unnamed: 9",
+            "A1": "Unnamed: 10",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20712.0",
+        "name": "이석민",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20312.0",
+        "name": "이석현",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B": "Unnamed: 9",
+            "C": "Unnamed: 29",
+            "D": "Unnamed: 31"
+        }
+    },
+    {
+        "id": "20610.0",
+        "name": "이재현",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "A": "Unnamed: 11",
+            "B": "Unnamed: 12",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 30"
+        }
+    },
+    {
+        "id": "20714.0",
+        "name": "이종운",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A1": "Unnamed: 10",
+            "B": "Unnamed: 16",
+            "D": "Unnamed: 32",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20116.0",
+        "name": "이현규",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "Unnamed: 9",
+            "B2": "Unnamed: 10",
+            "C": "Unnamed: 31",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20516.0",
+        "name": "임강이",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "C1": "Unnamed: 28",
+            "D": "Unnamed: 32"
+        }
+    },
+    {
+        "id": "20318.0",
+        "name": "정대영",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "A": "1학기 [택2] 4단위.1",
+            "B1": "Unnamed: 10",
+            "D": "1학기 [택2] 4단위.2",
+            "C": "Unnamed: 27"
+        }
+    },
+    {
+        "id": "20719.0",
+        "name": "정호영",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "1,2학기 [택1] 2단위씩 ",
+            "B": "Unnamed: 12",
+            "A": "Unnamed: 13",
+            "D1": "Unnamed: 28",
+            "C": "Unnamed: 33"
+        }
+    },
+    {
+        "id": "20421.0",
+        "name": "최민",
+        "class": "8.0",
+        "subjects": {
+            "8.0": "반배정",
+            "1": "Unnamed: 24",
+            "B": "1학기 [택2] 4단위.1",
+            "A": "Unnamed: 14",
+            "C": "1학기 [택2] 4단위.2",
+            "D": "Unnamed: 33"
+        }
+    }
+]
+              function showTimetable() {
+            const studentId = document.getElementById('studentId').value;
+            const student = students.find(s => s.id === studentId);
+
+            if (!student) {
+                alert('학생 정보를 찾을 수 없습니다.');
+                return;
+            }
+
+            // 모든 시간표 숨기기
+            document.querySelectorAll('.timetable').forEach(table => {
+                table.classList.remove('active');
+            });
+
+            // 해당 반 시간표 표시
+            const classTable = document.getElementById(`class${student.class}`);
+            if (classTable) {
+                classTable.classList.add('active');
+                replaceSubjects(classTable, student.subjects);
+            }
+        }
+
+        function replaceSubjects(table, subjects) {
+            const rows = table.getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                for (let j = 1; j < cells.length; j++) {
+                    const cellText = cells[j].textContent;
+                    if (cellText.startsWith('A')) {
+                        cells[j].textContent = subjects.A;
+                    } else if (cellText.startsWith('B')) {
+                        cells[j].textContent = subjects.B;
+                    } else if (cellText.startsWith('C')) {
+                        cells[j].textContent = subjects.C;
+                    } else if (cellText.startsWith('D')) {
+                        cells[j].textContent = subjects.D;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
